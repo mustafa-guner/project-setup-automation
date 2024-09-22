@@ -20,10 +20,15 @@ install_composer() {
 
   echo print_message $BLUE "Downloading Composer Installer..."
   sudo apt install php-cli unzip curl
-  curl -sS https://getcomposer.org/installer -o composer-setup.php
+
+  # Download composer-setup.php to /tmp directory
+  curl -sS https://getcomposer.org/installer -o /tmp/composer-setup.php
 
   echo print_message $BLUE "Installing composer globally"
-  sudo php composer-setup.php --install-dir=/usr/local/bin --filename=composer
+  sudo php /tmp/composer-setup.php --install-dir=/usr/local/bin --filename=composer
+
+  # Optionally remove the installer after installation
+  rm /tmp/composer-setup.php
 }
 
 # Install all the required dependencies

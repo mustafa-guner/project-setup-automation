@@ -130,7 +130,11 @@ for project in "${!projects[@]}"; do
   if ! check_host_exists "$project"; then
     # Add project to /etc/hosts if not already added
     print_message $BLUE "Adding $project to /etc/hosts..."
-    print_message $GREEN "127.0.0.1 $project.test" | sudo tee -a /etc/hosts
+
+    # This line should only write plain text to /etc/hosts, no colored output
+    echo "127.0.0.1 $project.test" | sudo tee -a /etc/hosts >/dev/null
+
+    print_message $GREEN "127.0.0.1 $project.test added to /etc/hosts"
   else
     print_message $YELLOW "$project is already in /etc/hosts. Skipping..."
   fi

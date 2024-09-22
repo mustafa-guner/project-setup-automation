@@ -3,19 +3,31 @@
 # Base directory for the projects
 base_dir="/var/www/"
 
+# Define colors
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[0;33m'
+BLUE='\033[0;34m'
+RESET='\033[0m'
+
+# Function to print colored messages
+print_message() {
+  echo -e "${1}${2}${RESET}"
+}
+
 # Install all the required dependencies
 install_dependencies() {
-  echo "Updating package list..."
+  print_message $BLUE "Updating package list..."
   sudo apt update
 
-  echo "Adding PHP PPA repository for multiple PHP versions..."
+  print_message $BLUE "Adding PHP PPA repository for multiple PHP versions..."
   sudo add-apt-repository -y ppa:ondrej/php
   sudo apt update
 
-  echo "Installing grep..."
+  print_message $BLUE "Installing grep..."
   sudo apt install -y grep
 
-  echo "Installing PHP versions and FPM modules..."
+  print_message $BLUE "Installing PHP versions and FPM modules..."
   sudo apt install -y \
     php5.6 php5.6-cli php5.6-common php5.6-curl php5.6-fpm php5.6-gd \
     php5.6-json php5.6-mbstring php5.6-mcrypt php5.6-mysql php5.6-opcache \
@@ -39,13 +51,13 @@ install_dependencies() {
     php8.3 php8.3-cli php8.3-common php8.3-curl php8.3-fpm php8.3-mbstring \
     php8.3-opcache php8.3-phpdbg php8.3-readline php8.3-xdebug php8.3-xml
 
-  echo "Installing additional required dependencies (MySQL, Apache modules)..."
+  print_message $BLUE "Installing additional required dependencies (MySQL, Apache modules)..."
   sudo apt install -y apache2 libapache2-mod-fcgid
 
-  echo "Enabling FPM module for Apache..."
+  print_message $BLUE "Enabling FPM module for Apache..."
   sudo a2enmod proxy_fcgi setenvif
 
-  echo "Restarting Apache..."
+  print_message $BLUE "Restarting Apache..."
   sudo systemctl restart apache2
 }
 
@@ -85,28 +97,28 @@ for project in "${!projects[@]}"; do
   git_repo_url="${projects[$project]}"
 
   # Clone project into /var/www/
-  echo "Cloning $project from $git_repo_url..."
+  print_message $BLUE "Cloning $project from $git_repo_url..."
   git clone "$git_repo_url" "$base_dir/$project"
 
   # Check if the host entry already exists
-  echo "Checking if $project is already in /etc/hosts..."
+  print_message $BLUE "Checking if $project is already in /etc/hosts..."
   if ! check_host_exists "$project"; then
     # Add project to /etc/hosts if not already added
-    echo "Adding $project to /etc/hosts..."
-    echo "127.0.0.1 $project.test" | sudo tee -a /etc/hosts
+    print_message $BLUE "Adding $project to /etc/hosts..."
+    print_message $GREEN "127.0.0.1 $project.test" | sudo tee -a /etc/hosts
   else
-    echo "$project is already in /etc/hosts. Skipping..."
+    print_message $YELLOW "$project is already in /etc/hosts. Skipping..."
   fi
 
   # Create symbolic link for the project
-  echo "Creating symbolic link for the project..."
+  print_message $BLUE "Creating symbolic link for the project..."
   sudo ln -s "$base_dir/$project/public" "/var/www/html/$project"
 
   # Get PHP version dynamically from composer.json
   php_version=$(get_php_version_from_composer "$base_dir/$project")
 
   # Create Apache Virtual Host Configuration
-  echo "Creating Apache config for $project..."
+  print_message $BLUE "Creating Apache config for $project..."
   sudo bash -c "cat > /etc/apache2/sites-available/$project.conf <<EOF
 <VirtualHost *:80>
     ServerName $project.test
@@ -128,14 +140,15 @@ for project in "${!projects[@]}"; do
 EOF"
 
   # Enable the site
-  echo "Enabling $project site in Apache..."
+  print_message $BLUE "Enabling $project site in Apache..."
   sudo a2ensite "$project"
 
   # Set file permissions and ownership
-  echo "Setting file permissions and ownership for $project..."
+  print_message $BLUE "Setting file permissions and ownership for $project..."
   sudo chmod -R 775 "$base_dir/$project"
   sudo chown -R www-data:"$current_user" "$base_dir/$project"
 
+  print_message $BLUE "Global git configs are being set for the project..."
   # Set the git config as global
   git config --global --add safe.directory "$base_dir/$project"
 
@@ -145,6 +158,7 @@ EOF"
 done
 
 # Restart Apache after enabling the sites
+print_message $GREEN "Restarting the apache2..."
 sudo systemctl reload apache2
 
-echo "All projects have been set up!"
+print_message $GREEN "All projects have been set up!"

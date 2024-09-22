@@ -26,7 +26,7 @@ Before running the script, ensure you have:
    cd <repository-folder>
 ```
 
-Make the script executable:
+**Make the script executable:**
 
 ```bash
 chmod +x setup.sh
@@ -39,6 +39,8 @@ Edit the setup.sh file to include your project details in the projects associati
 ```bash
 ["project-name"]="git@github.com:username/repo.git"
 ```
+
+**Note:** Since "Project-name" will be used as a key abbreviation to determine the project under /etc/hosts and in the sites-available configuration file, please ensure that you use the correct abbreviation.
 
 ## Usage
 Run the setup script with sudo privileges:

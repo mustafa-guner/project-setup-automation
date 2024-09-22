@@ -26,48 +26,57 @@ Before running the script, ensure you have:
    cd <repository-folder>
 Make the script executable:
 
-bash
-Copy code
+```bash
 chmod +x setup.sh
+```
+
 Modify the script:
 
 Edit the setup.sh file to include your project details in the projects associative array. The format is:
-bash
-Copy code
+
+```bash
 ["project-name"]="git@github.com:username/repo.git"
-Usage
+```
+
+## Usage
 Run the setup script with sudo privileges:
 
-bash
-Copy code
+```bash
 sudo ./setup.sh
-Script Flow
-Dependency Installation:
+```
 
-Updates package lists.
-Adds the necessary PPA for PHP versions.
-Installs required PHP versions and extensions.
-Installs Apache and enables necessary modules.
-Project Cloning:
+## Script Flow
+**Dependency Installation:**
+- Updates package lists.
+- Adds the necessary PPA for PHP versions.
+- Installs required PHP versions and extensions.
+- Installs Apache and enables necessary modules.
+
+**Project Cloning:**
 
 Clones each project specified in the projects array to the /var/www/ directory.
-Hosts Configuration:
 
-Checks if a host entry already exists in /etc/hosts to avoid duplicates.
-Adds a new entry for each project if it doesn’t already exist.
-Apache Configuration:
+**Hosts Configuration:**
 
-Creates a virtual host configuration file for each project.
-Enables the site configuration in Apache.
-Permissions:
+- Checks if a host entry already exists in /etc/hosts to avoid duplicates.
+- Adds a new entry for each project if it doesn’t already exist.
+
+**Apache Configuration:**
+
+- Creates a virtual host configuration file for each project.
+- Enables the site configuration in Apache.
+
+**Permissions:**
 
 Sets the appropriate file permissions and ownership for each project directory.
-Final Restart:
+
+**Final Restart:**
 
 Restarts Apache to apply all changes.
 Troubleshooting
 If you encounter issues, ensure that all commands in the script execute without errors.
+
 Check the /etc/hosts file for duplicate entries manually:
-bash
-Copy code
+```bash
 cat /etc/hosts
+```

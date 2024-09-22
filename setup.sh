@@ -17,10 +17,27 @@ install_dependencies() {
 
   echo "Installing PHP versions and FPM modules..."
   sudo apt install -y \
-    php7.0 php7.0-fpm php7.0-mbstring php7.0-xml php7.0-zip php7.0-curl \
-    php8.0 php8.0-fpm php8.0-mbstring php8.0-xml php8.0-zip php8.0-curl \
-    php8.1 php8.1-fpm php8.1-mbstring php8.1-xml php8.1-zip php8.1-curl \
-    php8.2 php8.2-fpm php8.2-mbstring php8.2-xml php8.2-zip php8.2-curl
+    php5.6 php5.6-cli php5.6-common php5.6-curl php5.6-fpm php5.6-gd \
+    php5.6-json php5.6-mbstring php5.6-mcrypt php5.6-mysql php5.6-opcache \
+    php5.6-readline php5.6-soap php5.6-xml php5.6-zip \
+    php7.0 php7.0-cli php7.0-common php7.0-curl php7.0-fpm php7.0-gd \
+    php7.0-json php7.0-ldap php7.0-mbstring php7.0-mysql php7.0-opcache \
+    php7.0-readline php7.0-soap php7.0-xml php7.0-xmlrpc php7.0-zip \
+    php7.1 php7.1-cli php7.1-common php7.1-curl php7.1-fpm php7.1-gd \
+    php7.1-json php7.1-mbstring php7.1-mysql php7.1-opcache php7.1-readline \
+    php7.1-xml php7.4 php7.4-cli php7.4-common php7.4-curl php7.4-fpm \
+    php7.4-gd php7.4-json php7.4-mbstring php7.4-mysql php7.4-opcache \
+    php7.4-readline php7.4-xml php8.0 php8.0-cli php8.0-common php8.0-curl \
+    php8.0-fpm php8.0-gd php8.0-mailparse php8.0-mbstring php8.0-mysql \
+    php8.0-opcache php8.0-readline php8.0-xml php8.0-zip \
+    php8.1 php8.1-cli php8.1-common php8.1-curl php8.1-fpm php8.1-gd \
+    php8.1-mbstring php8.1-mysql php8.1-opcache php8.1-readline php8.1-uopz \
+    php8.1-xml php8.1-zip php8.2 php8.2-bcmath php8.2-cli php8.2-common \
+    php8.2-curl php8.2-fpm php8.2-gd php8.2-imagick php8.2-imap \
+    php8.2-intl php8.2-ldap php8.2-mbstring php8.2-mysql php8.2-opcache \
+    php8.2-readline php8.2-tidy php8.2-xml php8.2-xmlrpc php8.2-zip \
+    php8.3 php8.3-cli php8.3-common php8.3-curl php8.3-fpm php8.3-mbstring \
+    php8.3-opcache php8.3-phpdbg php8.3-readline php8.3-xdebug php8.3-xml
 
   echo "Installing additional required dependencies (MySQL, Apache modules)..."
   sudo apt install -y apache2 libapache2-mod-fcgid
@@ -128,6 +145,6 @@ EOF"
 done
 
 # Restart Apache after enabling the sites
-sudo systemctl restart apache2
+sudo systemctl reload apache2
 
 echo "All projects have been set up!"

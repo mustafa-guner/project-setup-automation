@@ -20,17 +20,19 @@ Before running the script, ensure you have:
 
 ## Installation
 
-1. **Clone this repository**:
+ **Clone this repository**:
    ```bash
    git clone <repository-url>
    cd <repository-folder>
+```
+
 Make the script executable:
 
 ```bash
 chmod +x setup.sh
 ```
 
-Modify the script:
+**Modify the script:**
 
 Edit the setup.sh file to include your project details in the projects associative array. The format is:
 
@@ -49,16 +51,16 @@ sudo ./setup.sh
 **Dependency Installation:**
 - Updates package lists.
 - Adds the necessary PPA for PHP versions.
-- Installs required PHP versions and extensions.
+- Install required PHP versions and extensions.
 - Installs Apache and enables necessary modules.
 
 **Project Cloning:**
 
-Clones each project specified in the projects array to the /var/www/ directory.
+Clones each project specified in the projects array to the `/var/www/` directory.
 
 **Hosts Configuration:**
 
-- Checks if a host entry already exists in /etc/hosts to avoid duplicates.
+- Checks if a host entry already exists in `/etc/hosts` to avoid duplicates.
 - Adds a new entry for each project if it doesn’t already exist.
 
 **Apache Configuration:**
@@ -72,11 +74,20 @@ Sets the appropriate file permissions and ownership for each project directory.
 
 **Final Restart:**
 
-Restarts Apache to apply all changes.
+Restart Apache to apply all changes.
 Troubleshooting
-If you encounter issues, ensure that all commands in the script execute without errors.
+If you encounter issues, please make sure that all commands in the script execute without errors.
 
-Check the /etc/hosts file for duplicate entries manually:
+Check the `/etc/hosts` file for duplicate entries manually:
 ```bash
 cat /etc/hosts
 ```
+
+## Troubleshooting
+If you encounter issues, please ensure all commands in the script execute without errors.
+Check the `/etc/hosts` file for duplicate entries manually:
+
+```bash
+cat /etc/hosts
+```
+

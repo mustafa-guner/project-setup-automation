@@ -15,10 +15,27 @@ print_message() {
   echo -e "${1}${2}${RESET}"
 }
 
+# Install composer
+install_composer() {
+
+  echo print_message $BLUE "Downloading Composer Installer..."
+  sudo apt install php-cli unzip curl
+  curl -sS https://getcomposer.org/installer -o composer-setup.php
+
+  echo print_message $BLUE "Installing composer globally"
+  sudo php composer-setup.php --install-dir=/usr/local/bin --filename=composer
+}
+
 # Install all the required dependencies
 install_dependencies() {
   print_message $BLUE "Updating package list..."
   sudo apt update
+
+  print_message $BLUE "Installing MySQL..."
+  sudo apt install mysql-server
+
+  print_message $BLUE "Installing Apache2..."
+  sudo apt install apache2
 
   print_message $BLUE "Adding PHP PPA repository for multiple PHP versions..."
   sudo add-apt-repository -y ppa:ondrej/php
@@ -59,6 +76,9 @@ install_dependencies() {
 
   print_message $BLUE "Restarting Apache..."
   sudo systemctl restart apache2
+
+  #Installing composer
+  install_composer
 }
 
 # Function to get PHP version from composer.json
@@ -148,12 +168,10 @@ EOF"
   sudo chmod -R 775 "$base_dir/$project"
   sudo chown -R www-data:"$current_user" "$base_dir/$project"
 
+  # Set git configs as globally
   print_message $BLUE "Global git configs are being set for the project..."
-  # Set the git config as global
   git config --global --add safe.directory "$base_dir/$project"
-
-  # Set the core files for git config
-  git config core.fileMode false
+  git config --global core.fileMode false
 
 done
 

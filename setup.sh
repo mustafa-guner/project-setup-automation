@@ -170,7 +170,7 @@ EOF"
 
   # Enable the site
   print_message $BLUE "Enabling $project site in Apache..."
-  sudo a2ensite "$project"
+  sudo a2ensite "$project.conf"
 
   # Set file permissions and ownership
   print_message $BLUE "Setting file permissions and ownership for $project..."
